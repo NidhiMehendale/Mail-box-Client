@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, Fragment } from "react";
+import Login from './components/startingPage/login';
+import Register from "./components/startingPage/Register";
+import { Route, Switch } from "react-router-dom";
+
+
 
 function App() {
+  const [currentForm, setCurrentForm] = useState('login');
+
+  const toggleForm = (formName) => {
+    setCurrentForm(formName);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Switch>
+        <Route path="/" exact>
+          
+       { currentForm === "login" ? <Login onFormSwitch={toggleForm} /> : <Register onFormSwitch={toggleForm} />}
+        </Route>
+        <Route path="/resetpassword" exact>
+         
+        </Route>
+      </Switch>
+    </Fragment>
   );
 }
 
