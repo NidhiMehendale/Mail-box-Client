@@ -4,6 +4,7 @@ import Register from "./components/startingPage/Register";
 import { Route, Switch } from "react-router-dom";
 import Header from "./components/Header/Header";
 import { useSelector } from "react-redux";
+import ComposeMail from "./components/Header/ComposeMail";
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isAuthenticated);
@@ -26,9 +27,13 @@ function App() {
         </Route>
         <Route path="/header">
         <Header />
+       
       </Route>
-        <Route path="/resetpassword" exact>
-          
+       
+        <Route path="/composemail" exact>
+         <ComposeMail />
+        </Route>
+         <Route path="/resetpassword" >    
         </Route>
       </Switch>
     </Fragment>
