@@ -1,13 +1,16 @@
 import React, { useRef } from "react";
-import './login.module.css';
-//import { useHistory } from "react-router-dom";
-
+import classes  from './login.module.css';
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { authActions } from "../store/authnetication";
 
 const Login = (props) => {
 
-   // const history = useHistory();
+   const history = useHistory();
     const emailInputRef = useRef();
     const passwordInputRef = useRef();
+    
+    const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -43,9 +46,9 @@ const Login = (props) => {
             });   
           }
         }).then(data => {
-             // authCtx.login(data.idToken);
              console.log("getdata", data); 
-             // history.replace(replace);
+             dispatch(authActions.login({ token: data.idToken, email: data.email }))
+              history.replace('/header');
              window.location.reload();
          
         })
@@ -55,17 +58,26 @@ const Login = (props) => {
     };
 
     return (
-        <div className="auth-form-container">
+        <section className={classes['auth-form-container']}>
             <h2>Login</h2>
-            <form className="login-form" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
+            <div className={classes.control}>
                 <label htmlFor="email">Email</label>
                 <input  type="email"  id="email" ref={emailInputRef} required />
+            </div>
+            <div className={classes.control}>
                 <label htmlFor="password">password</label>
                 <input type="password" id="password"  ref={passwordInputRef} required/>
-                <button type="submit">Log In</button>
+                <button className={classes.forgotBtn}>Forgot Password?</button>
+            </div>
+               
+                <div >
+                
+                <button className={classes['auth-form-btn']}  type="submit">Log In</button>
+                </div>
             </form>
-            <button className="link-btn" onClick={() => props.onFormSwitch('register')}>Don't have an account? Register here.</button>
-        </div>
+            <button className={classes.toogle} onClick={() => props.onFormSwitch('register')}>Don't have an account? Register here.</button>
+        </section>
     )
 }
 
