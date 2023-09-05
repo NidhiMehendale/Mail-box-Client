@@ -1,23 +1,29 @@
-import React, { useState } from "react";
+import React, {  } from "react";
 import { Container, Nav, Navbar, NavLink } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/authnetication";
 
-import ComposeMail from "./ComposeMail";
+// import ComposeMail from "./ComposeMail";
+// import Inbox from "./Inbox";
 
 
 function Header() {
   const dispatch = useDispatch();
-  const [showComposeMail, setShowComposeMail] = useState(false);
+  // const [showComposeMail, setShowComposeMail] = useState(false);
+  // const [showInbox, setInbox] = useState(false);
 
   const logoutHandler = () => {
     console.log('logout')
     dispatch(authActions.logout());
   };
 
-  const toggleComposeMail = () => {
-    setShowComposeMail(!showComposeMail);
-  };
+  // const toggleComposeMail = () => {
+  //   setShowComposeMail(!showComposeMail);
+  // };
+
+  // const toggleInbox = () => {
+  //   setInbox(!showInbox);
+  // };
 
   return (
     <Navbar bg="light" expand="lg">
@@ -30,9 +36,14 @@ function Header() {
         </Navbar.Brand>
         <div style={{display:'flex',justifyContent:'space-between'}}>
       
-        <Nav className="me-auto">
-          <NavLink className="nav-link" onClick={toggleComposeMail} >
+         <Nav className="me-auto">
+          <NavLink className="nav-link" to="/composemail" href="/composemail">
             <h4>Compose Email</h4>
+          </NavLink>
+
+        
+          <NavLink className="nav-link"  to="/inbox" href="/inbox">
+            <h4>Inbox</h4>
           </NavLink>
 
           <NavLink
@@ -49,7 +60,9 @@ function Header() {
           display: "flex",
           justifyContent: "end",
         }}>
-        {showComposeMail && <ComposeMail />}  
+          
+     </Nav>
+     <Nav>
      </Nav>
         </div>
       </Container>

@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-
+import classes from './Register.module.css';
 
 const Register = (props) => {
     const emailInputRef = useRef();
@@ -55,19 +55,26 @@ const Register = (props) => {
     }
 
     return (
-        <div className="auth-form-container">
+        <section className={classes['auth-form-container']}>
             <h2>SignUp</h2>
           <form className="register-form" onSubmit={submitHandler}>
+          <div className={classes.control}>
             <label htmlFor="email">Email</label>
             <input type="email" placeholder="youremail@gmail.com" id="email" ref={emailInputRef}  required/>
+          </div>
+          <div className={classes.control}>
             <label htmlFor="password">password</label>
             <input type="password" id="password" ref={passwordInputRef}  required />
+          </div>
+          <div className={classes.control}>
             <label htmlFor="password">Confirm password</label>
             <input  type="password" id="cpassword" ref={confirmpasswordInputRef}  required/>
+          </div>
+           
             <button type="submit">Create Account</button>
         </form>
         <button className="link-btn" onClick={() => props.onFormSwitch('login')}>Already have an account? Login here.</button>
-    </div>
+    </section>
     )
 };
 

@@ -1,0 +1,63 @@
+.auth-form-container {
+    margin: 7rem auto;
+    width: 22%;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .auth-form-container h2 {
+    margin-bottom: 20px;
+  }
+  
+  .control {
+    margin-bottom: 27px;
+  }
+  
+  
+  .auth-form-container label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .auth-form-container input{
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .auth-form-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .auth-form-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  .forgotBtn {
+    background-color: transparent;
+    color: black;
+    border: none;
+    margin-left: 5.6rem;
+  }
+  
+  .toogle{
+    margin-top: 1rem;
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 0.15rem 1.5rem;
+  }
+  
+  .toggle:hover {
+    background-color: transparent;
+    color:black
+  
+  }   
+  
