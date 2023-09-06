@@ -27,6 +27,8 @@ const Inbox = () => {
     fetchMails();
   }, [email]);
 
+  
+
   return (
     <Container>
       <h1>INBOX</h1>
@@ -40,7 +42,7 @@ const Inbox = () => {
               border: "1px solid #ccc",
             }}
           >
-          {mails[key].userEmail ? `From: ${mails[key].from}` : 'From: N/A'}<br />
+          {mails[key].from ? `From: ${(mails[key].from)}` : 'From: N/A'}<br />
           {mails[key].subject ? `Subject: ${mails[key].subject}` : 'Subject: N/A'}<br />
           {mails[key].content ? `Content: ${mails[key].content}` : 'Content: N/A'}
           </ListGroup.Item>
