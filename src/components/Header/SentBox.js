@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { mailSliceAction } from "../storeRedux/emailReducer";
+import { mailSliceAction } from "../store/emailReducer";
 import classes from "./SentBox.module.css";
 
 const SentBox = () => {
@@ -14,10 +12,7 @@ const SentBox = () => {
   const deleteHandler = async (id) => {
     try {
       const response = await fetch(
-        // `https://mailbox-client-a7da2-default-rtdb.firebaseio.com/sentbox/${myEmail}/${id}.json`,
-        `https://my-projects-f3664-default-rtdb.firebaseio.com/sentbox/${myEmail}/${id}.json`,
-
-        // `https://http-authentication1-default-rtdb.firebaseio.com/sentbox/${myEmail}/${id}.json`,
+        `https://mail-box-client-fc026-default-rtdb.firebaseio.com/sentbox/${myEmail}/${id}.json`,
 
         {
           method: "DELETE",
@@ -36,8 +31,9 @@ const SentBox = () => {
     const fetchDaata = async () => {
       try {
         const reponse = await fetch(
-            `https://mail-box-client-fc026-default-rtdb.firebaseio.com/sentbox/${myEmail}.json`
-          
+            `https://mailbox-client-a7da2-default-rtdb.firebaseio.com/sentbox/${myEmail}.json`
+          //    `https://http-authentication1-default-rtdb.firebaseio.com/sentbox/${myEmail}.json`,
+        //   `https://my-projects-f3664-default-rtdb.firebaseio.com/sentbox/${myEmail}.json`
         );
 
         const mailData = await reponse.json();

@@ -46,6 +46,10 @@ function Header() {
             <h4>Inbox</h4>
           </NavLink>
 
+          <NavLink className="nav-link"  to="/sentbox" href="/sentbox">
+          <h4>Sent</h4>
+        </NavLink>
+
           <NavLink
             to="login"
             href="/login"

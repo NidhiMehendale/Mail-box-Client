@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import ComposeMail from "./components/Header/ComposeMail";
 import Inbox from "./components/Header/Inbox";
 import ReadMsg from "./components/Header/ReadMsg";
+import SentBox from "./components/Header/SentBox";
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isAuthenticated);
@@ -37,6 +38,9 @@ function App() {
         </Route>
         <Route path="/inbox">
           <Inbox />
+        </Route>
+        <Route path="/sentbox">
+          <SentBox />
         </Route>
         <Route path="/readmsg">
         <ReadMsg />

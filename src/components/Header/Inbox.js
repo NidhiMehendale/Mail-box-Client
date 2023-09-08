@@ -9,7 +9,7 @@ const Inbox = () => {
   // Initialize mails as an empty object
   const [mails, setEmails] = useState({});
 
-  const [reRender, setreRender] = useState(true);
+ 
 
   useEffect(() => {
     const fetchMails = async () => {
