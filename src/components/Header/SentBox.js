@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { mailSliceAction } from "../store/emailReducer";
+import { mailSliceAction } from "../storeRedux/emailReducer";
 import classes from "./SentBox.module.css";
 
 const SentBox = () => {
+  
   const dispatch = useDispatch();
+
   const [reRender, setreRender] = useState(true);
+
   const mailInSentbox = useSelector((state) => state.mail.sendMails);
+
   const myEmail = localStorage.getItem("email").replace(/['@','.']/g, "");
 
   const deleteHandler = async (id) => {
     try {
       const response = await fetch(
         `https://mail-box-client-fc026-default-rtdb.firebaseio.com/sentbox/${myEmail}/${id}.json`,
-
         {
           method: "DELETE",
         }
       );
       const deleteData = await response.json();
       setreRender((prev) => !prev);
+      console.log("deleted" + deleteData);
     } catch (error) {
       alert(error);
     }
@@ -31,17 +35,14 @@ const SentBox = () => {
     const fetchDaata = async () => {
       try {
         const reponse = await fetch(
-            `https://mailbox-client-a7da2-default-rtdb.firebaseio.com/sentbox/${myEmail}.json`
-          //    `https://http-authentication1-default-rtdb.firebaseio.com/sentbox/${myEmail}.json`,
-        //   `https://my-projects-f3664-default-rtdb.firebaseio.com/sentbox/${myEmail}.json`
+          `https://mail-box-client-fc026-default-rtdb.firebaseio.com/sentbox/${myEmail}.json`
         );
 
         const mailData = await reponse.json();
-        console.log("useEffectcalled", mailData);
+        console.log("useEffectCalled", mailData);
         for (let key in mailData) {
           data = [{ id: key, ...mailData[key] }, ...data];
         }
-
         dispatch(mailSliceAction.updateSentbox(data));
         console.log(mailInSentbox, "mailInSentbox");
       } catch (error) {
@@ -51,6 +52,7 @@ const SentBox = () => {
     fetchDaata();
   }, [reRender]);
   console.log(data, "data");
+
   return (
     <div className={classes.main}>
       {mailInSentbox.length > 0 ? (
@@ -59,9 +61,6 @@ const SentBox = () => {
             <div className={classes.row1} key={item.id}>
               <div className={classes.user}>To :- {item.to}</div>
               <div className={classes.subject}>Subject :- {item.subject}</div>
-              {/* <div className={classes.msg}>
-                <NavLink to={`/message/${item.id}`}>{'{message}'}</NavLink>
-            </div> */}
               <div className={classes.msg}>message :- {item.message}</div>
               <div className={classes.delete}>
                 <button onClick={deleteHandler.bind(null, item.id)}>

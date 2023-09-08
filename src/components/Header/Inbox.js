@@ -1,81 +1,87 @@
 import React, { useEffect, useState } from "react";
-import { Container, ListGroup } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+import { mailSliceAction } from "../store/emailReducer";
+import classes from "./Inbox.module.css";
 
 const Inbox = () => {
-  const userEmail = useSelector((state) => state.auth.userEmail);
-  const email = userEmail.replace(/[@.]/g, "");
+
+    const dispatch = useDispatch();
   
-  // Initialize mails as an empty object
-  const [mails, setEmails] = useState({});
-
- 
-
-  useEffect(() => {
-    const fetchMails = async () => {
+    const mailInInbox = useSelector((state) => state.mail.mails);
+    const [reRender, setreRender] = useState(true);
+    const myEmail = localStorage.getItem("email").replace(/['@','.']/g, "");
+  
+    const deleteHandler = async (id) => {
       try {
         const response = await fetch(
-          `https://mail-box-client-fc026-default-rtdb.firebaseio.com/inbox/${email}.json`
+          `https://mail-box-client-fc026-default-rtdb.firebaseio.com/inbox/${myEmail}/${id}.json`,
+          {
+            method: "DELETE",
+          }
         );
-        if (response.ok) {
-          const data = await response.json();
-          setEmails(data || {}); // Ensure data is an object or initialize as an empty object
-        } else {
-          throw new Error("Something Went Wrong");
-        }
-      } catch (err) {
-        alert("Something went Wrong");
+        const deleteData = await response.json();
+        console.log(deleteData);
+        setreRender((prev) => !prev);
+      } catch (error) {
+        alert(error);
       }
     };
-    fetchMails();
-  }, [email]);
-
-  const deleteHandler = async (id) => {
-    try {
-      const response = await fetch(
-        `https://mail-box-client-fc026-default-rtdb.firebaseio.com/inbox/${email}/${id}.json`,
-        {
-          method: "DELETE",
+  
+    let data = [];
+  
+    useEffect(() => {
+      const fetchDaata = async () => {
+        try {
+          const reponse = await fetch(
+            `https://mail-box-client-fc026-default-rtdb.firebaseio.com/inbox/${myEmail}.json`
+          );
+  
+          const mailData = await reponse.json();
+          console.log("useEffectcalled", mailData);
+          for (let key in mailData) {
+            data = [{ id: key, ...mailData[key] }, ...data];
+          }
+  
+          dispatch(mailSliceAction.updateInbox(data));
+        } catch (error) {
+          alert(error);
         }
-      );
-
-      if (response.ok) {
-        // Remove the deleted mail from the frontend state
-        const updatedMails = { ...mails };
-        delete updatedMails[id];
-        setEmails(updatedMails);
-      } else {
-        throw new Error("Something went wrong");
-      }
-    } catch (error) {
-      alert(error.message);
-    }
+      };
+      fetchDaata();
+    }, [reRender]);
+    return (
+      <div className={classes.main}>
+        {mailInInbox.length > 0 ? (
+          <div className={classes.row}>
+            {mailInInbox.map((item) => (
+              <div className={classes.row1} key={item.id}>
+                <div className={classes.user}>From :- {item.sender}</div>
+                <div className={classes.subject}>{item.subject}</div>
+                <div className={classes.msg}>
+                  <NavLink
+                    to={`/message/${item.id}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    {"{message}"}
+                  </NavLink>
+                </div>
+                {item.dot && (
+                  <div className={classes.dot}>{/* //dot logic */}</div>
+                )}
+                <div className={classes.delete}>
+                  <button onClick={deleteHandler.bind(null, item.id)}>
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>Inbox is empty</p>
+        )}
+      </div>
+    );
   };
-
-  return (
-    <Container>
-      <h1>INBOX</h1>
-      <ListGroup>
-        {Object.keys(mails).map((key) => (
-          <ListGroup.Item
-            key={key}
-            className="m-2"
-            style={{
-              backgroundColor: "#a563",
-              border: "1px solid #ccc",
-            }}
-          >
-            {mails[key].userEmail ? `From: ${mails[key].from}` : 'From: N/A'}-
-            {mails[key].subject ? `Subject: ${mails[key].subject}` : 'Subject: N/A'}-
-            {mails[key].content ? `Content: ${mails[key].content}` : 'Content: N/A'}-
-            <button onClick={() => deleteHandler(key)}>
-              Delete
-            </button>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-    </Container>
-  );
-};
-
-export default Inbox;
+  
+  export default Inbox;

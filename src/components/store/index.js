@@ -7,4 +7,4 @@ const store=configureStore({
     reducer:{auth:authReducer,mail:emailReducer}
 })
 
-export default store
+export default store    
