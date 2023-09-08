@@ -4,19 +4,22 @@ import { useSelector } from "react-redux";
 
 const Inbox = () => {
   const userEmail = useSelector((state) => state.auth.userEmail);
-
   const email = userEmail.replace(/[@.]/g, "");
-  const [mails, setEmails] = useState([]);
+  
+  // Initialize mails as an empty object
+  const [mails, setEmails] = useState({});
+
+  const [reRender, setreRender] = useState(true);
 
   useEffect(() => {
     const fetchMails = async () => {
       try {
         const response = await fetch(
-            `https://mail-box-client-fc026-default-rtdb.firebaseio.com/inbox/${email}.json`
+          `https://mail-box-client-fc026-default-rtdb.firebaseio.com/inbox/${email}.json`
         );
         if (response.ok) {
           const data = await response.json();
-          setEmails(data);
+          setEmails(data || {}); // Ensure data is an object or initialize as an empty object
         } else {
           throw new Error("Something Went Wrong");
         }
@@ -27,7 +30,27 @@ const Inbox = () => {
     fetchMails();
   }, [email]);
 
-  
+  const deleteHandler = async (id) => {
+    try {
+      const response = await fetch(
+        `https://mail-box-client-fc026-default-rtdb.firebaseio.com/inbox/${email}/${id}.json`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        // Remove the deleted mail from the frontend state
+        const updatedMails = { ...mails };
+        delete updatedMails[id];
+        setEmails(updatedMails);
+      } else {
+        throw new Error("Something went wrong");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   return (
     <Container>
@@ -35,16 +58,19 @@ const Inbox = () => {
       <ListGroup>
         {Object.keys(mails).map((key) => (
           <ListGroup.Item
-           key={key} 
+            key={key}
             className="m-2"
             style={{
               backgroundColor: "#a563",
               border: "1px solid #ccc",
             }}
           >
-          {mails[key].from ? `From: ${(mails[key].from)}` : 'From: N/A'}<br />
-          {mails[key].subject ? `Subject: ${mails[key].subject}` : 'Subject: N/A'}<br />
-          {mails[key].content ? `Content: ${mails[key].content}` : 'Content: N/A'}
+            {mails[key].userEmail ? `From: ${mails[key].from}` : 'From: N/A'}-
+            {mails[key].subject ? `Subject: ${mails[key].subject}` : 'Subject: N/A'}-
+            {mails[key].content ? `Content: ${mails[key].content}` : 'Content: N/A'}-
+            <button onClick={() => deleteHandler(key)}>
+              Delete
+            </button>
           </ListGroup.Item>
         ))}
       </ListGroup>

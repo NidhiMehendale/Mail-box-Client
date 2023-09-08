@@ -65,7 +65,7 @@ const ComposeMail = () => {
 
     try {
       const response = await fetch(
-        `https://my-projects-b70bb-default-rtdb.firebaseio.com/outbox/${receiverEmail}.json`,
+        `https://mail-box-client-fc026-default-rtdb.firebaseio.com/outbox/${receiverEmail}.json`,
         {
           method: "POST",
           body: JSON.stringify({
